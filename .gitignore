@@ -1,6 +1,5 @@
 # Not from .gitignore templates
 node_modules
-build
 bin/
 ehthumbs.db
 Thumbs.db
