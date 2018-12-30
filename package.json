@@ -1,7 +1,7 @@
 {
-  "name": "untitled",
+  "name": "this-is-not",
   "version": "1.0.0",
-  "description": "2019 Undergrad Show Project",
+  "description": "Artwork of Darin Buzon for 2019 Design | Media Arts Undergraduate Scholarship Show",
   "main": "index.js",
   "repository": "https://github.com/dabuzon/untitled.git",
   "author": "Darin Buzon",
@@ -28,5 +28,8 @@
     "webpack": "^4.28.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1"
   }
 }
