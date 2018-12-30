@@ -1,0 +1,7 @@
+{
+    "version": 2,
+    "alias": ["this-is-not.me", "www.this-is-not.me"],
+    "builds": [
+        {"src": "build/index.html", "use": "@now/static"}
+    ]
+}

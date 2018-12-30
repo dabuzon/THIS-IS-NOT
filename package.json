@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Artwork of Darin Buzon for 2019 Design | Media Arts Undergraduate Scholarship Show",
   "main": "index.js",
+  "scripts": {
+    "start:dev": "webpack-dev-server --mode=development",
+    "build": "webpack --mode=production"
+  },
   "repository": "https://github.com/dabuzon/untitled.git",
   "author": "Darin Buzon",
   "license": "MIT",
