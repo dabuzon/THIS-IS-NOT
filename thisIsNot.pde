@@ -1,4 +1,5 @@
 import processing.video.*;
+import org.openkinect.processing.*;
 
 Capture video;
 
