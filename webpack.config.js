@@ -4,16 +4,17 @@ const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+//const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 let entry = {
-    index: './src/scripts/index.js'
+    index: './website/src/scripts/index.js'
 }
 
 let output = {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'build')
+    path: path.resolve(__dirname, 'website/build')
 }
 
 let loaders = {
@@ -36,7 +37,7 @@ let loaders = {
         {
             test: /\.m?js$/,
             include: [
-                path.resolve(__dirname, 'src')
+                path.resolve(__dirname, './website/src')
             ],
             exclude: [
                 path.resolve(__dirname, 'node_modules'),
@@ -57,6 +58,13 @@ let loaders = {
             }, {
                 loader: 'expose-loader',
                 options: '$'
+            }]
+        },
+        {
+            test: require.resolve('dayjs'),
+            use: [{
+                loader: 'expose-loader',
+                options: 'dayjs'
             }]
         },
         {
@@ -121,7 +129,7 @@ let plugins = [
     }),
     new HtmlWebpackPlugin({
         title: 'Darin Buzon',
-        template: './src/index.html',
+        template: './website/src/index.html',
         minify: true
     }),
     new webpack.LoaderOptionsPlugin({
@@ -132,8 +140,9 @@ let plugins = [
         }
     }),
     new ExtractTextPlugin('style.css'),
-    new FaviconsWebpackPlugin('./favicon.svg'),
-    new CleanWebpackPlugin(['dist'])
+    //new FaviconsWebpackPlugin('./favicon.svg'),
+    new CleanWebpackPlugin(['build'])
+    //new BundleAnalyzerPlugin()
 ]
 
 module.exports = {
