@@ -9,6 +9,6 @@ Is *this* really? This is? Is it safe to accept and agree that this is? This is 
 ## Artwork details
 ***thisIsNot*** was an artwork produced by [Darin Buzon]() and exhibited for the UCLA Design | Media Arts Undergraduate Exhibition *Breaking the Rules*, from 17 January 2019 to 1 February 2019. Documentation accessible [here]().
 ## Repository details
-This repository contains the [source code]() for the website, the [assets]() used for the artwork's production, [documentation]() of the artwork itself, and the [research]() gathered during ideation including links and bibliography.
+This repository contains the [source code]() for the website and installation media, the [assets]() used for the artwork's production, [documentation]() of the artwork itself, and the [research]() gathered during ideation including links and bibliography.
 ## License
 The content of this project itself is licensed under the [Creative Commons Attribution-ShareaAlike 4.0 International license](https://creativecommons.org/licenses/by-sa/4.0/), and the underlying source code used to format and display that content is licensed under the [MIT license](https://github.com/github/choosealicense.com/blob/gh-pages/LICENSE.md).

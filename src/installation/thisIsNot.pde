@@ -1,48 +1,30 @@
-import processing.video.*;
-Capture video;
-PImage prevFrame;
-float threshold = 50;
+import org.openkinect.processing.*;
+
+Kinect2 kinect2;
 
 void setup() {
-  size(320, 240);
-  video = new Capture(this, width, height, 30);
-  video.start();
-  prevFrame = createImage(video.width, video.height, RGB);
-}
-
-void captureEvent(Capture video) {
-  prevFrame.copy(video, 0, 0, video.width, video.height, 0, 0, video.width, video.height);
-  prevFrame.updatePixels();
-  video.read();
+  size(512, 424, P3D);
+  kinect2 = new Kinect2(this);
+  kinect2.initDepth();
+  kinect2.initDevice();
 }
 
 void draw() {
+  background(0);
 
-  loadPixels();
-  video.loadPixels();
-  prevFrame.loadPixels();
+  PImage img = kinect2.getDepthImage();
 
-  for (int x = 0; x < video.width; x ++ ) {
-    for (int y = 0; y < video.height; y ++ ) {
-
-      int loc = x + y*video.width;
-      color current = video.pixels[loc];
-      color previous = prevFrame.pixels[loc];
-
-      float r1 = red(current); 
-      float g1 = green(current); 
-      float b1 = blue(current);
-      float r2 = red(previous); 
-      float g2 = green(previous); 
-      float b2 = blue(previous);
-      float diff = dist(r1, g1, b1, r2, g2, b2);
-
-      if (diff > threshold) { 
-        pixels[loc] = color(0);
-      } else {
-        pixels[loc] = color(255);
-      }
+  int skip = 20;
+  for (int x = 0; x < img.width; x+=skip) {
+    for (int y = 0; y < img.height; y+=skip) {
+      int index = x + y * img.width;
+      float b = brightness(img.pixels[index]);
+      float z = map(b, 0, 255, 250, -250);
+      fill(255-b);
+      pushMatrix();
+      translate(x, y, z);
+      rect(0, 0, skip/2, skip/2);
+      popMatrix();
     }
   }
-  updatePixels();
 }
