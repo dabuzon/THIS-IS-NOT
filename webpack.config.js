@@ -9,12 +9,12 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 //const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 let entry = {
-    index: './website/src/scripts/index.js'
+    index: './src/web/scripts/index.js'
 }
 
 let output = {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'website/build')
+    path: path.resolve(__dirname, 'src/web/build')
 }
 
 let loaders = {
@@ -37,7 +37,7 @@ let loaders = {
         {
             test: /\.m?js$/,
             include: [
-                path.resolve(__dirname, './website/src')
+                path.resolve(__dirname, './src/web')
             ],
             exclude: [
                 path.resolve(__dirname, 'node_modules'),
@@ -129,7 +129,7 @@ let plugins = [
     }),
     new HtmlWebpackPlugin({
         title: 'Darin Buzon',
-        template: './website/src/index.html',
+        template: './src/web/index.html',
         minify: true
     }),
     new webpack.LoaderOptionsPlugin({
