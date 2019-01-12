@@ -3,7 +3,7 @@ import codeanticode.syphon.*;
 PGraphics canvas;
 SyphonServer server;
 
-void setup() { 
+void setup() {
   size(400,400, P3D);
   canvas = createGraphics(400, 400, P3D);
   

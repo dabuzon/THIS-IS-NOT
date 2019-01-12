@@ -4,7 +4,7 @@
  * applications. It only works on MacOSX and requires the P3D
  * renderer.
  *
- * (c) 2011-17
+ * (c) 2011-2012
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,9 +21,9 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author		Andres Colubri http://andrescolubri.net/
- * @modified	09/19/2017
- * @version		##version##
+ * @author		Andres Colubri http://interfaze.info/
+ * @modified	09/04/2012
+ * @version		Beta2-r6
  */
 
 package codeanticode.syphon;
@@ -54,38 +54,8 @@ public class SyphonServer {
     pg = (PGraphicsOpenGL)parent.g;
     serverName = name;
     Syphon.init();
-    parent.registerMethod("dispose", this);
   }
-  
-  
-  /**
-   * This method is called automatically when the sketch is disposed, so making
-   * sure that the server is properly stopped and Syphon doesn't complain about
-   * memory not being properly released:
-   * https://github.com/Syphon/Processing/issues/4
-   * 
-   */
-  public void dispose() {
-    server.stop();
-  } 
 	
-  
-  /**
-   * The class finalizer tries to make sure that the server is stopped. No 
-   * guarantee that this method is ever called by the GC, but just in case.
-   * 
-   */
-  protected void finalize() throws Throwable {
-    try {
-      if (server != null) {
-        server.stop();
-      }
-    } finally {
-      super.finalize();
-    }
-  }  
-  
-  
   /**
    * Returns true if this server is bound to any
    * client.
@@ -96,7 +66,6 @@ public class SyphonServer {
     return server.hasClients();
   }	
 	
-  
   /**
    * Sends the source image to the bound client.
    * 
@@ -113,7 +82,7 @@ public class SyphonServer {
       if (server == null) {
         // The server needs to be created after setup and all the 
         // JOGL initialization has taken place. Otherwise frame
-        // sending doesn't work...
+        // sending doens't work...
         server = new JSyphonServer();
         server.initWithName(serverName);        
       }
@@ -126,24 +95,12 @@ public class SyphonServer {
     }
   }	
   
-  
-  /**
-   * Sends the screen image to the bound client.
-   * 
-   */   
-  public void sendScreen() {
-    // Should use enableFBOLayer() instead...
-    pg.pgl.requestFBOLayer();
-    sendImage(pg);    
-  }
-  
-  
   /**
    * Stops the server.
    * 
    */  
   public void stop() {
     server.stop();
-  }
+  }  
 }
 

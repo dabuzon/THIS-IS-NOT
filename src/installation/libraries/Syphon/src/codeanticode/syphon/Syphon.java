@@ -4,7 +4,7 @@
  * applications. It only works on MacOSX and requires the P3D
  * renderer.
  *
- * (c) 2011-17
+ * (c) 2011-2012
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,9 +21,9 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author    Andres Colubri http://andrescolubri.net/
- * @modified  09/19/2017
- * @version   ##version##
+ * @author    Andres Colubri http://interfaze.info/
+ * @modified  09/04/2012
+ * @version   Beta2-r6
  */
 
 /**
@@ -61,12 +61,13 @@ package codeanticode.syphon;
  * Syphon is an open source Mac OS X technology that allows 
  * applications to share frames - full frame rate video or stills - 
  * with one another in realtime. 
+ * It also requires Processing 2.0a4 or newer with the P3D renderer.
  * 
  * {@link http://syphon.v002.info/}
  * 
  */ 
 public class Syphon {  
-  public final static String VERSION = "2.0";
+   protected final static String VERSION = "Beta2-r6";
   
    protected static int count;
 
@@ -75,8 +76,8 @@ public class Syphon {
     * 
     */   
    protected static void init() {
-     if (count == 0) {       
-       System.out.println("Syphon 2.0 by Andres Colubri http://andrescolubri.net/");       
+     if (count == 0) {
+       System.out.println("Syphon Beta2-r6 by Andres Colubri http://interfaze.info/");
      }
      count++;
    }
