@@ -4,7 +4,7 @@
  * applications. It only works on MacOSX and requires the P3D
  * renderer.
  *
- * (c) 2011-2012
+ * (c) 2011-17
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,9 +21,9 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author    Andres Colubri http://interfaze.info/
- * @modified  09/04/2012
- * @version   Beta2-r6
+ * @author    Andres Colubri http://andrescolubri.net/
+ * @modified  09/19/2017
+ * @version   ##version##
  */
 
 /**
@@ -57,7 +57,8 @@
 package codeanticode.syphon;
 
 import java.nio.IntBuffer;
-import java.util.Dictionary;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import processing.core.*;
 import processing.opengl.*;
@@ -77,12 +78,54 @@ public class SyphonClient {
   
   /**
    * Constructor that binds this client to the
+   * first available server.
+   * 
+   * @param parent
+   */  
+  public SyphonClient(PApplet parent) {
+    this.parent = parent;
+    pg = (PGraphicsOpenGL)parent.g;
+    
+    Syphon.init();
+    
+    client = new JSyphonClient();
+    client.init();   
+  }
+  
+  
+  /**
+   * Constructor that binds this client to the
    * specified named server.
    * 
    * @param parent
    * @param serverName
    */  
-  public SyphonClient(PApplet parent, String serverName) {
+  public SyphonClient(PApplet parent, String appName) {
+    this.parent = parent;
+    pg = (PGraphicsOpenGL)parent.g;
+    
+    Syphon.init();
+    
+    client = new JSyphonClient();
+    client.init();    
+    
+    if (appName != null) {
+      client.setApplicationName(appName);
+    } else {
+      throw new RuntimeException("No valid application name was provided");
+    }
+  }
+
+  
+  /**
+   * Constructor that binds this client to the
+   * specified named server.
+   * 
+   * @param parent
+   * @param appName
+   * @param serverName
+   */  
+  public SyphonClient(PApplet parent, String appName, String serverName) {
     this.parent = parent;
     pg = (PGraphicsOpenGL)parent.g;
     
@@ -90,28 +133,110 @@ public class SyphonClient {
     
     client = new JSyphonClient();
     client.init();
-    client.setApplicationName(serverName);    
-    //PApplet.println(client.isValid());
+    
+    boolean setAppName = false; 
+    if (appName != null && !appName.equals("")) {
+      client.setApplicationName(appName);
+      setAppName = true;
+    }
+    
+    boolean setServerName = false;
+    if (serverName != null && !serverName.equals("")) {
+      client.setServerName(serverName);
+      setServerName = true;
+    }
+    
+    if (!setAppName && !setServerName) {
+      throw new RuntimeException("No valid application or server names were provided");
+    }
   }
-
+  
+    
   /**
-   * Returns a description of the server.
+   * Returns an array of hash maps containing the names of the currently
+   * available Syphon servers.
    * 
-   * @return Dictionary
+   * @return HashMap<String, String>
+   */
+  @SuppressWarnings("unchecked")
+  static public HashMap<String, String>[] listServers() {
+    Syphon.init();
+    
+    ArrayList<HashMap<String, String>> tempList = null;
+    int size0 = 0;
+    int count = 0;
+    for (int i = 0; i < 50; i++) {
+      try {
+        Thread.sleep(10);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      tempList = JSyphonServerList.getList();
+      if (tempList.size() == size0) {
+        count++;
+      }
+      size0 = tempList.size();
+      if (10 < count) {
+        break;
+      }
+    }
+    
+    HashMap<String, String>[] outArray = new HashMap[tempList.size()]; 
+    for (int i = 0; i < tempList.size(); i++) {
+      HashMap<String, String> desc = tempList.get(i);
+      String appName = desc.get("SyphonServerDescriptionAppNameKey");
+      String serverName = desc.get("SyphonServerDescriptionNameKey");
+      HashMap<String, String> res = new HashMap<String, String>();
+      res.put("AppName", appName);
+      res.put("ServerName", serverName);      
+      outArray[i] = res;
+    }
+                               
+    return outArray;
+  }
+  
+  
+  /**
+   * Returns a hash map containing two key-value pairs: one (key=="AppName")
+   * containing the name of the application running the server bound to this 
+   * client, the other (key=="ServerName") is the actual name of the server.
+   * 
+   * @return HashMap<String, String>
    */   
-  public Dictionary<String, String> description() {
-    return client.serverDescription();  
+  public HashMap<String, String> getServerName() {
+    HashMap<String, String> desc = client.serverDescription();
+    
+    String appName = desc.get("SyphonServerDescriptionAppNameKey");
+    String serverName = desc.get("SyphonServerDescriptionNameKey");
+    
+    HashMap<String, String> res = new HashMap<String, String>();
+    res.put("AppName", appName);
+    res.put("ServerName", serverName);
+    
+    return res;  
+  }
+  
+  
+  /**
+   * Returns true if the server this client is listening to does exist.
+   * 
+   * @return boolean 
+   */   
+  public boolean active() {
+    return client.isValid();
   }
 
+  
   /**
    * Returns true if a new frame is available.
    * 
    * @return boolean 
    */   
-  public boolean available() {
-    return client.hasNewFrame();
+  public boolean newFrame() {
+    return client.isValid() && client.hasNewFrame();
   }
 
+  
   /**
    * Copies the new frame to a PGraphics object.
    * It initializes dest if it is null or has the 
@@ -132,8 +257,11 @@ public class SyphonClient {
     
     PGraphicsOpenGL destpg = (PGraphicsOpenGL)dest;
     destpg.beginDraw();
-    destpg.drawTexture(PGL.TEXTURE_RECTANGLE, texId, texWidth, texHeight, 
-                       0, 0, texWidth, texHeight);
+    destpg.background(0, 0);
+    PGL pgl = destpg.beginPGL();
+    pgl.drawTexture(PGL.TEXTURE_RECTANGLE, texId, texWidth, texHeight, 
+                    0, 0, texWidth, texHeight);
+    destpg.endPGL();
     destpg.endDraw();
         
     return dest;      
@@ -146,13 +274,15 @@ public class SyphonClient {
   
   
   /**
-   * Copies the new frame to a PImage object.
+   * Copies the new frame into a PImage object.
    * It initializes dest if it is null or has the 
    * wrong size.
    * 
    * @param dest
    */    
-  public PImage getImage(PImage dest, boolean loadPixels) {    
+  public PImage getImage(PImage dest, boolean loadPixels) {
+    if (!client.isValid()) return null;
+    
     JSyphonImage img = client.newFrameImageForContext();
     
     int texId = img.textureName();
@@ -168,15 +298,21 @@ public class SyphonClient {
     }
     
     PGraphicsOpenGL destpg = (PGraphicsOpenGL)tempDest;
-    destpg.setTexture(dest);
-    
     destpg.beginDraw();
-    destpg.drawTexture(PGL.TEXTURE_RECTANGLE, texId, texWidth, texHeight, 
-                       0, 0, texWidth, texHeight);
+    destpg.background(0, 0);
+    PGL pgl = destpg.beginPGL();
+    pgl.drawTexture(PGL.TEXTURE_RECTANGLE, texId, texWidth, texHeight, 
+                    0, 0, texWidth, texHeight);
+    destpg.endPGL();
     destpg.endDraw();
-    
+
+    // Uses the PGraphics texture as the cache object for the image
+    Texture tex = destpg.getTexture();
+    pg.setCache(dest, tex);    
     if (loadPixels) {
       dest.loadPixels();
+      tex.get(dest.pixels);
+      dest.setLoaded(false);
     }
     
     return dest;      

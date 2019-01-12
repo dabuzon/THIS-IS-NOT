@@ -1,7 +1,7 @@
 /**
  * An OSC (Open Sound Control) library for processing.
  *
- * (c) 2004-2011
+ * (c) 2004-2012
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,9 +18,9 @@
  * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA  02111-1307  USA
  * 
- * @author		Andreas Schlegel http://www.sojamo.de/libraries/oscP5
- * @modified	12/19/2011
- * @version		0.9.8
+ * @author		Andreas Schlegel http://www.sojamo.de
+ * @modified	12/23/2012
+ * @version		0.9.9
  */
 
 package oscP5;
@@ -64,8 +64,7 @@ import netP5.UdpPacketListener;
 
 /**
  * TODO add better error message handling for oscEvents, see this post
- * http://forum.processing.org/topic/oscp5-major-problems-with-error-handling#
- * 25080000000811163
+ * http://forum.processing.org/topic/oscp5-major-problems-with-error-handling# 25080000000811163
  */
 public class OscP5 implements UdpPacketListener, TcpPacketListener {
 
@@ -90,20 +89,17 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	public final static boolean OFF = OscProperties.OFF;
 
 	/**
-	 * a static variable used when creating an oscP5 instance with a sepcified
-	 * network protocol.
+	 * a static variable used when creating an oscP5 instance with a sepcified network protocol.
 	 */
 	public final static int UDP = OscProperties.UDP;
 
 	/**
-	 * a static variable used when creating an oscP5 instance with a sepcified
-	 * network protocol.
+	 * a static variable used when creating an oscP5 instance with a sepcified network protocol.
 	 */
 	public final static int MULTICAST = OscProperties.MULTICAST;
 
 	/**
-	 * a static variable used when creating an oscP5 instance with a sepcified
-	 * network protocol.
+	 * a static variable used when creating an oscP5 instance with a sepcified network protocol.
 	 */
 	public final static int TCP = OscProperties.TCP;
 
@@ -128,7 +124,8 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	/**
 	 * @invisible
 	 */
-	public static final String VERSION = "0.9.8";
+	public static final String VERSION = "0.9.9";
+
 
 	/**
 	 * @param theParent Object
@@ -146,16 +143,19 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		_myOscNetManager.start(_myOscProperties);
 		if (_myOscProperties.networkProtocol() == OscProperties.TCP) {
 			_myOscNetManager.addTcpListener(this);
-		} else {
+		}
+		else {
 			_myOscNetManager.addUdpListener(this);
 		}
 		isEventMethod = checkEventMethod();
 		if (_myOscProperties.networkProtocol() == OscProperties.MULTICAST) {
 			Logger.printInfo("OscP5", "is joining a multicast group @ " + _myOscProperties.remoteAddress().address() + ":" + _myOscProperties.remoteAddress().port());
-		} else {
+		}
+		else {
 			Logger.printInfo("OscP5", "is running. you (" + ip() + ") are listening @ port " + _myOscProperties.remoteAddress().port());
 		}
 	}
+
 
 	/**
 	 * @param theParent Object
@@ -196,6 +196,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		isEventMethod = checkEventMethod();
 	}
 
+
 	public OscP5(final Object theParent, final int theReceiveAtPort, final int theMode) {
 		welcome();
 		parent = theParent;
@@ -221,6 +222,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		isEventMethod = checkEventMethod();
 	}
 
+
 	/**
 	 * @param theParent Object
 	 * @param theReceiveAtPort int
@@ -236,45 +238,48 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		isEventMethod = checkEventMethod();
 	}
 
+
 	private void welcome() {
 		System.out.println("OscP5 " + VERSION + " " + "infos, comments, questions at http://www.sojamo.de/oscP5\n\n");
 	}
 
+
 	private void registerDispose(Object theObject) {
 		try {
-		Object parent = null;
-		String child = "processing.core.PApplet";
-		try {
-			Class<?> childClass = Class.forName(child);
-			Class<?> parentClass = Object.class;
-
-			if (parentClass.isAssignableFrom(childClass)) {
-				parent = childClass.newInstance();
-				parent = theObject;
-			}
-		} catch (Exception e) {
-			// System.out.println(e);
-		}
-		try {
-			Method method = parent.getClass().getMethod("registerDispose", Object.class);
+			Object parent = null;
+			String child = "processing.core.PApplet";
 			try {
-				method.invoke(parent, new Object[] { this });
-			} catch (IllegalArgumentException e) {
-				// System.out.println(e);
-			} catch (IllegalAccessException e) {
-				// System.out.println(e);
-			} catch (InvocationTargetException e) {
+				Class<?> childClass = Class.forName(child);
+				Class<?> parentClass = Object.class;
+
+				if (parentClass.isAssignableFrom(childClass)) {
+					parent = childClass.newInstance();
+					parent = theObject;
+				}
+			} catch (Exception e) {
 				// System.out.println(e);
 			}
-		} catch (SecurityException e) {
-			// System.out.println("fail (1) " + e);
-		} catch (NoSuchMethodException e) {
-			// System.out.println("fail (2) " + e);
-		}
-		} catch(NullPointerException e) {
-			System.err.println("Register Dispose\n"+e);
+			try {
+				Method method = parent.getClass().getMethod("registerDispose", Object.class);
+				try {
+					method.invoke(parent, new Object[] { this });
+				} catch (IllegalArgumentException e) {
+					// System.out.println(e);
+				} catch (IllegalAccessException e) {
+					// System.out.println(e);
+				} catch (InvocationTargetException e) {
+					// System.out.println(e);
+				}
+			} catch (SecurityException e) {
+				// System.out.println("fail (1) " + e);
+			} catch (NoSuchMethodException e) {
+				// System.out.println("fail (2) " + e);
+			}
+		} catch (NullPointerException e) {
+			System.err.println("Register Dispose\n" + e);
 		}
 	}
+
 
 	private void initUDP(final int theReceiveAtPort) {
 		_myOscProperties = new OscProperties();
@@ -285,10 +290,11 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		Logger.printInfo("OscP5", "is running. you (" + ip() + ") are listening @ port " + theReceiveAtPort);
 	}
 
+
 	/**
-	 * check which eventMethod exists in the Object oscP5 was started from. this
-	 * is necessary for backwards compatibility for oscP5 because the previous
-	 * parameterType for the eventMethod was OscIn and is now OscMessage.
+	 * check which eventMethod exists in the Object oscP5 was started from. this is necessary for
+	 * backwards compatibility for oscP5 because the previous parameterType for the eventMethod was
+	 * OscIn and is now OscMessage.
 	 * 
 	 * @return boolean
 	 * @invisible
@@ -333,6 +339,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		return false;
 	}
 
+
 	/**
 	 * get the current version of oscP5.
 	 * 
@@ -342,6 +349,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		return VERSION;
 	}
 
+
 	/**
 	 * @invisible
 	 */
@@ -349,28 +357,30 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		stop();
 	}
 
+
 	public void addListener(OscEventListener theListener) {
 		_myOscProperties.listeners().add(theListener);
 	}
+
 
 	public void removeListener(OscEventListener theListener) {
 		_myOscProperties.listeners().remove(theListener);
 	}
 
+
 	public Vector<OscEventListener> listeners() {
 		return _myOscProperties.listeners();
 	}
 
+
 	/**
-	 * osc messages can be automatically forwarded to a specific method of an
-	 * object. the plug method can be used to by-pass parsing raw osc messages -
-	 * this job is done for you with the plug mechanism. you can also use the
-	 * following array-types int[], float[], String[]. (but only as on single
-	 * parameter e.g. somemethod(int[] theArray) {} ).
+	 * osc messages can be automatically forwarded to a specific method of an object. the plug
+	 * method can be used to by-pass parsing raw osc messages - this job is done for you with the
+	 * plug mechanism. you can also use the following array-types int[], float[], String[]. (but
+	 * only as on single parameter e.g. somemethod(int[] theArray) {} ).
 	 * 
 	 * @param theObject Object, can be any Object
-	 * @param theMethodName String, the method name an osc message should be
-	 *            forwarded to
+	 * @param theMethodName String, the method name an osc message should be forwarded to
 	 * @param theAddrPattern String, the address pattern of the osc message
 	 * @param theTypeTag String
 	 * @example oscP5plug
@@ -382,17 +392,18 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		// _myOscPlugList.add(myOscPlug);
 		if (_myOscPlugMap.containsKey(theAddrPattern)) {
 			_myOscPlugMap.get(theAddrPattern).add(myOscPlug);
-		} else {
+		}
+		else {
 			ArrayList<OscPlug> myOscPlugList = new ArrayList<OscPlug>();
 			myOscPlugList.add(myOscPlug);
 			_myOscPlugMap.put(theAddrPattern, myOscPlugList);
 		}
 	}
 
+
 	/**
 	 * @param theObject Object, can be any Object
-	 * @param theMethodName String, the method name an osc message should be
-	 *            forwarded to
+	 * @param theMethodName String, the method name an osc message should be forwarded to
 	 * @param theAddrPattern String, the address pattern of the osc message
 	 * @example oscP5plug
 	 * @usage Application
@@ -418,7 +429,8 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 				// _myOscPlugList.add(myOscPlug);
 				if (_myOscPlugMap.containsKey(theAddrPattern)) {
 					_myOscPlugMap.get(theAddrPattern).add(myOscPlug);
-				} else {
+				}
+				else {
 					ArrayList<OscPlug> myOscPlugList = new ArrayList<OscPlug>();
 					myOscPlugList.add(myOscPlug);
 					_myOscPlugMap.put(theAddrPattern, myOscPlugList);
@@ -428,10 +440,12 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		}
 	}
 
+
 	private void handleSystemMessage(final OscMessage theOscMessage) {
 		if (theOscMessage.addrPattern().startsWith("/sys/ping")) {
 			send("/sys/pong", new Object[0], _myBroadcastAddress);
-		} else if (theOscMessage.addrPattern().startsWith("/sys/register")) {
+		}
+		else if (theOscMessage.addrPattern().startsWith("/sys/register")) {
 			if (theOscMessage.tcpConnection() != null) {
 				if (theOscMessage.checkTypetag("s")) {
 					theOscMessage.tcpConnection().setName(theOscMessage.get(0).stringValue());
@@ -439,6 +453,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 			}
 		}
 	}
+
 
 	private void callMethod(final OscMessage theOscMessage) {
 
@@ -506,7 +521,8 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 				if (isOscIn) {
 					invoke(parent, _myEventMethod, new Object[] { new OscIn(theOscMessage) });
 					Logger.printDebug("OscP5.callMethod ", "invoking OscIn " + isEventMethod);
-				} else {
+				}
+				else {
 					invoke(parent, _myEventMethod, new Object[] { theOscMessage });
 					Logger.printDebug("OscP5.callMethod ", "invoking OscMessage " + isEventMethod);
 				}
@@ -515,6 +531,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 			}
 		}
 	}
+
 
 	private void invoke(final Object theObject, final Method theMethod, final Object[] theArgs) {
 		try {
@@ -530,9 +547,9 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		}
 	}
 
+
 	/**
-	 * incoming osc messages from an udp socket are parsed, processed and
-	 * forwarded to the parent.
+	 * incoming osc messages from an udp socket are parsed, processed and forwarded to the parent.
 	 * 
 	 * @invisible
 	 * @param thePacket DatagramPacket
@@ -546,13 +563,15 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 					for (int i = 0; i < ((OscBundle) p).size(); i++) {
 						callMethod(((OscBundle) p).getMessage(i));
 					}
-				} else {
+				}
+				else {
 					callMethod((OscMessage) p);
 				}
 			}
 			notifyAll();
 		}
 	}
+
 
 	/**
 	 * @invisible
@@ -566,13 +585,15 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 					for (int i = 0; i < ((OscBundle) p).size(); i++) {
 						callMethod(((OscBundle) p).getMessage(i));
 					}
-				} else {
+				}
+				else {
 					callMethod((OscMessage) p);
 				}
 			}
 			notifyAll();
 		}
 	}
+
 
 	/**
 	 * @invisible
@@ -581,12 +602,14 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	public void remove(AbstractTcpClient theTcpClient) {
 	}
 
+
 	/**
 	 * @invisible
 	 * @param theIndex int
 	 */
 	public void status(int theIndex) {
 	}
+
 
 	/**
 	 * returns the current properties of oscP5.
@@ -599,6 +622,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		return _myOscProperties;
 	}
 
+
 	/**
 	 * @invisible
 	 * @return boolean
@@ -606,6 +630,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	public boolean isBroadcast() {
 		return isBroadcast;
 	}
+
 
 	/**
 	 * @return String
@@ -615,10 +640,10 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		return NetInfo.getHostAddress();
 	}
 
+
 	/**
-	 * oscP5 has a logging mechanism which prints out processes, warnings and
-	 * errors into the console window. e.g. turn off the error log with
-	 * setLogStatus(Logger.ERROR, Logger.OFF);
+	 * oscP5 has a logging mechanism which prints out processes, warnings and errors into the
+	 * console window. e.g. turn off the error log with setLogStatus(Logger.ERROR, Logger.OFF);
 	 * 
 	 * @param theIndex int
 	 * @param theValue int
@@ -627,6 +652,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	public static void setLogStatus(final int theIndex, final int theValue) {
 		Logger.set(theIndex, theValue);
 	}
+
 
 	/**
 	 * @param theValue
@@ -637,6 +663,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		}
 	}
 
+
 	/**
 	 * set timeToLive of a multicast packet.
 	 * 
@@ -645,6 +672,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	public void setTimeToLive(int theTTL) {
 		_myOscNetManager.setTimeToLive(theTTL);
 	}
+
 
 	/**
 	 * @param theHost NetAddress
@@ -658,6 +686,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 			_myBroadcastAddress = null;
 		}
 	}
+
 
 	/**
 	 * @param theNetAddress NetAddress
@@ -675,15 +704,17 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		}
 	}
 
+
 	/**
-	 * netinfo() returns an instance of a NetInfo Object from which you can get
-	 * LAN and WAN information.
+	 * netinfo() returns an instance of a NetInfo Object from which you can get LAN and WAN
+	 * information.
 	 * 
 	 * @return NetInfo
 	 */
 	public NetInfo netInfo() {
 		return _myNetInfo;
 	}
+
 
 	/**
 	 * return the instance of the running TCP server if in TCP mode.
@@ -694,6 +725,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		return _myOscNetManager.tcpServer();
 	}
 
+
 	/**
 	 * return the instance of the running TCP client if in TCP mode.
 	 * 
@@ -703,9 +735,10 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		return _myOscNetManager.tcpClient();
 	}
 
+
 	/**
-	 * you can send osc packets in many different ways. see below and use the
-	 * send method that fits your needs.
+	 * you can send osc packets in many different ways. see below and use the send method that fits
+	 * your needs.
 	 * 
 	 * 
 	 * @param thePacket OscPacket
@@ -716,6 +749,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		_myOscNetManager.send(thePacket, theNetAddress);
 	}
 
+
 	/**
 	 * @param thePacket OscPacket
 	 * @usage Application
@@ -724,6 +758,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	public void send(final OscPacket thePacket) {
 		_myOscNetManager.send(thePacket);
 	}
+
 
 	/**
 	 * @param thePacket OscPacket
@@ -734,6 +769,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		_myOscNetManager.send(thePacket, theNetAddressList);
 	}
 
+
 	/**
 	 * @param theAddrPattern String
 	 * @param theArguments Object[]
@@ -742,6 +778,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	public void send(final String theAddrPattern, final Object[] theArguments) {
 		_myOscNetManager.send(theAddrPattern, theArguments);
 	}
+
 
 	/**
 	 * @param theAddrPattern String
@@ -753,6 +790,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		_myOscNetManager.send(theAddrPattern, theArguments, theNetAddressList);
 	}
 
+
 	/**
 	 * @param theAddrPattern String
 	 * @param theArguments Object[]
@@ -762,6 +800,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	public void send(final String theAddrPattern, final Object[] theArguments, final NetAddress theNetAddress) {
 		_myOscNetManager.send(theAddrPattern, theArguments, theNetAddress);
 	}
+
 
 	/**
 	 * @param theAddrPattern String
@@ -773,6 +812,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		_myOscNetManager.send(theAddrPattern, theArguments, theAddress, thePort);
 	}
 
+
 	/**
 	 * send to tcp client
 	 * 
@@ -783,6 +823,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		theClient.send(thePacket.getBytes());
 	}
 
+
 	/**
 	 * @param theAddrPattern String
 	 * @param theArguments Object[]
@@ -792,9 +833,9 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		send(new OscMessage(theAddrPattern, theArguments), theClient);
 	}
 
+
 	/**
-	 * the send method offers a lot of possibilities. have a look in the send
-	 * documentation.
+	 * the send method offers a lot of possibilities. have a look at the send documentation.
 	 * 
 	 * @param thePacket OscPacket
 	 * @param theIpAddress String
@@ -806,6 +847,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		_myOscNetManager.send(thePacket, theIpAddress, thePort);
 	}
 
+
 	/**
 	 * stop oscP5 and close open Sockets.
 	 */
@@ -815,9 +857,10 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		Logger.printDebug("OscP5.stop", "stopping oscP5.");
 	}
 
+
 	/**
-	 * a static method to send an OscMessage straight out of the box without
-	 * having to instantiate oscP5.
+	 * a static method to send an OscMessage straight out of the box without having to instantiate
+	 * oscP5.
 	 * 
 	 * @param theOscMessage OscMessage
 	 * @param theNetAddress NetAddress
@@ -827,9 +870,16 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		flush(theOscMessage.getBytes(), theNetAddress);
 	}
 
+
+	public static void flush(final OscPacket theOscPacket, final NetAddress theNetAddress) {
+		flush(theOscPacket.getBytes(), theNetAddress);
+	}
+
+
 	public static void flush(final String theAddrPattern, final Object[] theArguments, final NetAddress theNetAddress) {
 		flush((new OscMessage(theAddrPattern, theArguments)).getBytes(), theNetAddress);
 	}
+
 
 	public static void flush(final byte[] theBytes, final NetAddress theNetAddress) {
 		DatagramSocket mySocket;
@@ -845,6 +895,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		}
 	}
 
+
 	/*
 	 * DEPRECATED methods and constructors.
 	 */
@@ -859,6 +910,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		flush(theBytes, new NetAddress(theAddress, thePort));
 	}
 
+
 	/**
 	 * @param theOscMessage OscMessage
 	 * @param theAddress String
@@ -868,6 +920,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	public static void flush(final OscMessage theOscMessage, final String theAddress, final int thePort) {
 		flush(theOscMessage.getBytes(), new NetAddress(theAddress, thePort));
 	}
+
 
 	/**
 	 * old version of constructor. still in here for backwards compatibility.
@@ -891,6 +944,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		isEventMethod = checkEventMethod();
 	}
 
+
 	/**
 	 * @deprecated
 	 * @param theAddrPattern String
@@ -900,6 +954,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	public OscMessage newMsg(String theAddrPattern) {
 		return new OscMessage(theAddrPattern);
 	}
+
 
 	/**
 	 * @deprecated
@@ -912,6 +967,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 		return new OscBundle();
 	}
 
+
 	/**
 	 * used by the monome library by jklabs
 	 * 
@@ -920,6 +976,7 @@ public class OscP5 implements UdpPacketListener, TcpPacketListener {
 	 */
 	public void disconnectFromTEMP() {
 	}
+
 
 	/**
 	 * @deprecated

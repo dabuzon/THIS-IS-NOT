@@ -9,3 +9,11 @@ static class CameraParams {
   static float p1 = 0.0;
   static float p2 = 0.0;
 }
+
+PVector depthToPointCloudPos(int x, int y, float depthValue) {
+  PVector point = new PVector();
+  point.z = (depthValue);
+  point.x = (x - CameraParams.cx) * point.z / CameraParams.fx;
+  point.y = (y - CameraParams.cy) * point.z / CameraParams.fy;
+  return point;
+}

@@ -11,7 +11,7 @@ import org.openkinect.tests.*;
 Kinect2 kinect2a;
 Kinect2 kinect2b;
 
-PImage canvas;
+PGraphics canvas;
 
 SyphonServer server;
 OscP5 oscP5;
@@ -19,7 +19,6 @@ NetAddress myBroadcastLocation;
 
 void setup() {
   fullScreen(P3D);
-  // Does this work? //
   canvas = createGraphics(displayWidth, displayHeight, P3D);
   
   kinect2a = new Kinect2(this);
@@ -43,46 +42,39 @@ void setup() {
 }
 
 void draw() {
-  background(255);
+  canvas.beginDraw(); // YOU MUST HAVE `beginDraw()` and `endDraw()` TO DISPLAY PROPERLY
+  canvas.background(255);
   
-  pushMatrix();
-  translate(width/2, height/2, -2250);
+  canvas.pushMatrix();
+  canvas.translate(width/2, height/2, -2250);
   
   int skip = 4;
   int[] depth = kinect2a.getRawDepth();
   
-  stroke(0);
-  strokeWeight(2.25);
-  beginShape(POINTS);
+  canvas.stroke(0);
+  canvas.strokeWeight(2.25);
+  canvas.beginShape(POINTS);
   for (int x = 0; x < kinect2a.depthWidth; x+=skip) {
     for (int y = 0; y < kinect2a.depthHeight; y+=skip) {
       int offset = x + y * kinect2a.depthWidth;
       int d = depth[offset];
       
       PVector point = depthToPointCloudPos(x, y, d);
-      vertex(point.x, point.y, point.z);
+      canvas.vertex(point.x, point.y, point.z);
       
       // THIS IS WHERE YOU MAP DISTANCE FROM KINECT //
       if (d > 300 && d < 1500) {
-        stroke(0);
+        canvas.stroke(0);
       } else {
-        stroke(255);
+        canvas.stroke(255);
       }
     }
   }
-  endShape();
-  popMatrix();
-  fill(255);
+  canvas.endShape();
+  canvas.popMatrix();
+  canvas.fill(255);
   
-  // FIGURE OUT HOW TO CONVERT CURRENT DRAWING INTO A PImage //
+  canvas.endDraw(); // YOU MUST HAVE `beginDraw()` and `endDraw()` TO DISPLAY PROPERLY
   image(canvas, 0, 0);
   server.sendImage(canvas);
-}
-
-PVector depthToPointCloudPos(int x, int y, float depthValue) {
-  PVector point = new PVector();
-  point.z = (depthValue);
-  point.x = (x - CameraParams.cx) * point.z / CameraParams.fx;
-  point.y = (y - CameraParams.cy) * point.z / CameraParams.fy;
-  return point;
 }
