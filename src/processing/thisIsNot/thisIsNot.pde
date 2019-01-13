@@ -1,29 +1,18 @@
-import codeanticode.syphon.*;
-
-import netP5.*;
-import oscP5.*;
-
-import org.openkinect.freenect.*;
-import org.openkinect.freenect2.*;
-import org.openkinect.processing.*;
-import org.openkinect.tests.*;
-
-Kinect2 kinect2a;
-Kinect2 kinect2b;
-
-PGraphics canvas;
-
-SyphonServer server;
-OscP5 oscP5;
-NetAddress myBroadcastLocation;
+void settings() {
+  fullScreen(P3D);
+}
 
 void setup() {
-  fullScreen(P3D);
   canvas = createGraphics(displayWidth, displayHeight, P3D);
   
+  
+  /* INITIALIZE KINECTS */
+  
+  // KINECT FACING ENTRANCE
   kinect2a = new Kinect2(this);
   kinect2a.initDepth();
   
+  // KINECT FACING BACK
   kinect2b = new Kinect2(this);
   kinect2b.initDepth();
   
@@ -36,9 +25,21 @@ void setup() {
   */
   // background(255);
   
-  server = new SyphonServer(this, "Processing Cube");
-  oscP5 = new OscP5(this, 5001);
-  myBroadcastLocation = new NetAddress("127.0.0.1", 5000);
+  /* INITIALIZE SYPHON SERVER */
+  server = new SyphonServer(this, "Processing Syphon");
+  cameras = Capture.list();
+  
+  if (cameras.length == 0) {
+    println("There are no cameras available for capture.");
+  } else {
+    println("Available cameras:");
+    for (int i = 0; i < cameras.length; i++) {
+      println(cameras[i]);
+    }
+    
+    cam = new Capture(this, cameras[0]);
+    cam.start();
+  }
 }
 
 void draw() {
