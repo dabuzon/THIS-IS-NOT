@@ -1,7 +1,7 @@
 # thisIsNot
 In theater or performance, there is always a curtain separating audience and performer; a physical obstruction that isolate the two. But then there also exists that fourth wall put into the mix. The omnipotent audience then "sees" what it seems. The image presented is intended to be "that is". But is what is given really "what is"? Is what we are seeing in whatever context truly what "is"?
 
-Imagine someone tells you, "your world view is a completely objective presentation of what surrounds you." Do you believe them? Is what you see the truth? Is what you are told as is what it seems?
+Imagine someone tells you, "Apples are red." Do you believe them? Is what you see the truth? Is what you are told as is what it seems?
 
 Rather than taking a position, ***thisIsNot*** poses questions of *what is*, *who is*, as well as in the negative and asking questions of what we choose to accept as is and what we choose to deny: What are those unchallenged assumptions that exist in our daily lives? What are the outright refusals of acknowledgement that we decide to accept? What are the associations we allow ourselves to be apart of?
 
