@@ -9,7 +9,7 @@ Is *this* really? This is? Is it safe to accept and agree that this is? This is 
 
 The hardware used included two projectors and two XBox One Kinects both run on an Apple Mac Pro "Six Core" 3.5 GHz, all generously provided by the UCLA Design | Media Arts department.
 
-Its installation source code was programmed in [Processing](https://processing.org/) with libraries and code snippets taken from [Dan Schiffman](https://shiffman.net/)'s [Coding Train tutorials](https://www.youtube.com/playlist?list=PLRqwX-V7Uu6ZMlWHdcy8hAGDy6IaoxUKf). Run on [Resolume Arena](https://resolume.com/), the artwork communicates its algorithm through [Syphon](http://syphon.v002.info/) to perform adequate projection mapping onto its physical media.
+Its installation source code was programmed in [Processing](https://processing.org/) with libraries and code snippets taken from [Dan Schiffman](https://shiffman.net/)'s [Coding Train tutorials](https://www.youtube.com/playlist?list=PLRqwX-V7Uu6ZMlWHdcy8hAGDy6IaoxUKf). Run on [Resolume Arena](https://resolume.com/), the artwork communicates its algorithm through [Syphon](http://syphon.v002.info/) to perform projection mapping onto its physical media.
 
 The physical media was created from cut OSB and square dowells, drilled together and finished with Gaffer tape. The form itself was inspired from the Yale School of Art Graphic Design 2018 MFA Thesis Exhibition: [An Image Going to Work](http://an-image-going-to-work.net/).
 ## Repository details
