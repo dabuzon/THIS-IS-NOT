@@ -5,7 +5,7 @@ Rather than taking a position, ***thisIsNot*** poses questions of *what is*, *wh
 
 Is *this* really? This is? Is it safe to accept and agree that this is? This is not what it seems. This is not what I feel. This is not what I think. This is not what is real. This is not what I know. This is not what you feel. This is not what you are. This is not.
 ## Artwork details
-***thisIsNot*** was a mixed media artwork created by [Darin Buzon](https://darinbuzon.info/) and exhibited for the [UCLA](http://www.ucla.edu/) [Design | Media Arts](http://dma.ucla.edu/) Undergraduate Exhibition *Breaking the Rules*, from 17 January 2019 to 1 February 2019.
+***thisIsNot*** was a mixed media artwork created by [Darin Buzon](https://darinbuzon.info/) and exhibited for the [UCLA](http://www.ucla.edu/) [Design | Media Arts](http://dma.ucla.edu/) Undergraduate Exhibition *[Breaking the Rules](https://www.facebook.com/events/224464751766683/)*, from 17 January 2019 to 1 February 2019.
 
 The hardware used included two projectors and two XBox One Kinects both run on an Apple Mac Pro "Six Core" 3.5 GHz, all generously provided by the UCLA Design | Media Arts department.
 
