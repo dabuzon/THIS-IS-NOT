@@ -50,7 +50,7 @@ void draw() {
       canvas.vertex(point.x, point.y, point.z);
       
       // THIS IS WHERE YOU MAP DISTANCE FROM KINECT //
-      if (d > 200 && d < 2000) {
+      if (d > 200 && d < 3000) {
         canvas.stroke(0);
       } else {
         canvas.stroke(255);
