@@ -5,25 +5,11 @@ void settings() {
 void setup() {
   canvas = createGraphics(displayWidth, displayHeight, P3D);
   
-  
   /* INITIALIZE KINECTS */
+  kinect2 = new Kinect2(this);
+  kinect2.initDepth();
   
-  // KINECT FACING ENTRANCE
-  kinect2a = new Kinect2(this);
-  kinect2a.initDepth();
-  
-  // KINECT FACING BACK
-  kinect2b = new Kinect2(this);
-  kinect2b.initDepth();
-  
-  kinect2a.initDevice(0);
-  kinect2b.initDevice(1);
-  /* 
-     Putting `background(255)` only in setup() will keep the points drawn instead of constantly being drawn.
-     However, not sure why we need to put background twice if we could just have it in draw() only.
-     Refer to MultiKinect.pde code at https://github.com/shiffman/OpenKinect-for-Processing/blob/master/OpenKinect-Processing/examples/Kinect_v2/MultiKinect2/MultiKinect2.pde
-  */
-  // background(255);
+  kinect2.initDevice();
   
   /* INITIALIZE SYPHON SERVER */
   server = new SyphonServer(this, "Processing Syphon");
@@ -50,21 +36,21 @@ void draw() {
   canvas.translate(width/2, height/2, -2250);
   
   int skip = 4;
-  int[] depth = kinect2a.getRawDepth();
+  int[] depth = kinect2.getRawDepth();
   
   canvas.stroke(0);
   canvas.strokeWeight(2.25);
   canvas.beginShape(POINTS);
-  for (int x = 0; x < kinect2a.depthWidth; x+=skip) {
-    for (int y = 0; y < kinect2a.depthHeight; y+=skip) {
-      int offset = x + y * kinect2a.depthWidth;
+  for (int x = 0; x < kinect2.depthWidth; x+=skip) {
+    for (int y = 0; y < kinect2.depthHeight; y+=skip) {
+      int offset = x + y * kinect2.depthWidth;
       int d = depth[offset];
       
       PVector point = depthToPointCloudPos(x, y, d);
       canvas.vertex(point.x, point.y, point.z);
       
       // THIS IS WHERE YOU MAP DISTANCE FROM KINECT //
-      if (d > 200 && d < 2500) {
+      if (d > 200 && d < 2000) {
         canvas.stroke(0);
       } else {
         canvas.stroke(255);

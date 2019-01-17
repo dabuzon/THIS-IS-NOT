@@ -7,7 +7,7 @@ Is *this* really? This is? Is it safe to accept and agree that this is? This is 
 ## Artwork details
 ***thisIsNot*** was a mixed media artwork created by [Darin Buzon](https://darinbuzon.info/) and exhibited for the [UCLA](http://www.ucla.edu/) [Design | Media Arts](http://dma.ucla.edu/) Undergraduate Exhibition *[Breaking the Rules](https://www.facebook.com/events/224464751766683/)*, from 17 January 2019 to 1 February 2019.
 
-The hardware used included two projectors and two XBox One Kinects both run on an Apple Mac Pro "Six Core" 3.5 GHz, all generously provided by the UCLA Design | Media Arts department.
+The hardware used included two projectors and two XBox One Kinects each run on two separate Apple Mac Pro "Six Core" 3.5 GHz, all generously provided by the UCLA Design | Media Arts department.
 
 Its installation source code was programmed in [Processing](https://processing.org/) with libraries and code snippets taken from [Dan Schiffman](https://shiffman.net/)'s [Coding Train tutorials](https://www.youtube.com/playlist?list=PLRqwX-V7Uu6ZMlWHdcy8hAGDy6IaoxUKf). Run on [Resolume Arena](https://resolume.com/), the artwork communicates its algorithm through [Syphon](http://syphon.v002.info/) to perform projection mapping onto its physical media.
 

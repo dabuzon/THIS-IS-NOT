@@ -1,6 +1,5 @@
 /* --KINECT-- */
-Kinect2 kinect2a;
-Kinect2 kinect2b;
+Kinect2 kinect2;
 
 /* --RESOLUME+SYPHON-- */
 Capture cam;
